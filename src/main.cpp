@@ -73,8 +73,24 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
+
+auto chassis = okapi::ChassisControllerBuilder().withMotors(/* Motors */).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).build(); //add appropriate motors
+auto model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
+
+/*
+Set motors here
+*/
+
+okapi::Controller controller;
+
+bool toggle = false;
+
+void opcontrol();{
+	model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::rightY)) //arcade style movement
+}
+
+/*pros::Controller master(pros::E_CONTROLLER_MASTER);
+
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 
@@ -85,8 +101,10 @@ void opcontrol() {
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
 
+void opcontrol() {
 		left_mtr = left;
 		right_mtr = right;
 		pros::delay(20);
 	}
 }
+*/
