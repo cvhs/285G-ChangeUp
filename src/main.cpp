@@ -78,7 +78,7 @@ auto chassis = okapi::ChassisControllerBuilder().withMotors(/* Motors */).withOd
 auto model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
 
 /*
-Set motors here
+Set motors here (i.e. okapi::motorGroup {x,y})
 */
 
 okapi::Controller controller;
@@ -86,8 +86,11 @@ okapi::Controller controller;
 bool toggle = false;
 
 void opcontrol();{
-	model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::rightY)) //arcade style movement
+	drive-> model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftY)); //arcade style movement
+	pros::delay(10); //edit delay as we see fit.
 }
+
+//outdated PROS opcontrol
 
 /*pros::Controller master(pros::E_CONTROLLER_MASTER);
 
