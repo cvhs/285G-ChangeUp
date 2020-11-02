@@ -86,7 +86,7 @@ okapi::Controller controller;
 bool toggle = false;
 
 void opcontrol();{
-	drive-> model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftY)); //arcade style movement
+	drive-> model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftX)); //arcade style movement
 	pros::delay(10); //edit delay as we see fit.
 }
 
