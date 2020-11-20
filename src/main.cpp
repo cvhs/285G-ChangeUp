@@ -30,7 +30,7 @@ void competition_initialize() {
 	okapi::ControllerButton redAuton = okapi::controllerDigital::L1;
 
 	pros::lcd::set_text(1, "Set 285G Auton"); //Change auton based on which color we are
-	pros::lcd::set_text(2, "L1 is Red, no input is blue")
+	pros::lcd::set_text(2, "L1 is Red, no input is blue");
 
 	bool autonRed;
 
