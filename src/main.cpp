@@ -25,7 +25,7 @@ void competition_initialize() {}
 void autonomous() {}
 
 
-okapi::ChassisScales scales(4_in, ); //I need to get measurement for wheelbase width
+okapi::ChassisScales scales(4_in, 11.5_in); //I need to get measurement for wheelbase width
 
 //Button inputs
 okapi::ControllerButton intakeButton = okapi::ControllerDigital::R2;
@@ -39,7 +39,7 @@ okapi::Controller controller;
 bool toggle = false;
 
 void opcontrol(){
-auto chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).build(); 
+auto chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales, imev5GreenTPR).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).build(); 
 auto model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
 	
 	while(1){
