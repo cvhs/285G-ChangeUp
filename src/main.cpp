@@ -1,5 +1,4 @@
-#include "main.h"
-#include "devices.hpp" //keeping both for now, might delete main.h?
+#include "devices.hpp" //deleted main.h, might bring it back
 
 
 void on_center_button() {
@@ -26,20 +25,37 @@ void competition_initialize() {}
 void autonomous() {}
 
 
-auto chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).build(); //add appropriate motors
-auto model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
+okapi::ChassisScales scales(4_in, ); //I need to get measurement for wheelbase width
 
-/*
-Set motors here (i.e. okapi::motorGroup {x,y})
-*/
+//Button inputs
+okapi::ControllerButton intakeButton = okapi::ControllerDigital::R2;
+okapi::ControllerButton outtakeButton = okapi::ControllerDigital::R1;
+
+okapi::MotorGroup intake = MotorGroup({/*Insert Intake motorports here*/});
 
 okapi::Controller controller;
 
 bool toggle = false;
 
 void opcontrol(){
-	std::shared_ptr<ChassisController> drive-> model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftX)); //arcade style movement
-	pros::delay(10); //edit delay as we see fit.
+auto chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).build(); 
+auto model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
+	
+	while(1){
+
+		std::shared_ptr<ChassisController> drive-> model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftX)); //arcade style movement
+		//pros::delay(10); //edit delay as we see fit.
+
+		if(intakeButton.isPressed()){
+			intake.moveVelocity(150); //Test motor velocities
+		}
+		else if(outtakeButton.isPressed()){
+			intake.moveVelocity(-90); //More testing here, too
+		}
+		else {
+			intake.moveVelocity(0);
+		}
+	}
 }
 
 //outdated PROS opcontrol
