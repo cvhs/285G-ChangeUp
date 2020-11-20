@@ -11,18 +11,22 @@ void on_center_button() {
 	}
 }
 
-void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
-
-	pros::lcd::register_btn1_cb(on_center_button);
-}
+void initialize() {}
 
 void disabled() {}
 
-void competition_initialize() {}
+void competition_initialize() {
 
-void autonomous() {}
+	pros::lcd::initialize();
+
+	pros::lcd::set_text(1, "Set 285G Auton"); //Change auton based on which color we are
+
+}
+
+void autonomous() {
+	std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales, imev5GreenTPR).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).buildOdometry(); 
+	std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
+	}
 
 
 okapi::ChassisScales scales(4_in, 11.5_in); //I need to get measurement for wheelbase width
@@ -36,16 +40,14 @@ okapi::MotorGroup rollers = MotorGroup({/*Insert rollers motorports here*/});
 
 okapi::Controller controller;
 
-bool toggle = false;
-
 void opcontrol(){
-auto chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales, imev5GreenTPR).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).build(); 
-auto model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
+std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales, imev5GreenTPR).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).buildOdometry(); 
+std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
 	
 	while(1){
 
 		std::shared_ptr<ChassisController> drive-> model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftX)); //arcade style movement
-		//pros::delay(10); //edit delay as we see fit.
+		
 
 		if(intakeButton.isPressed()){
 			intake.moveVelocity(150); //Test motor velocities
@@ -59,6 +61,7 @@ auto model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel())
 			intake.moveVelocity(0);
 			rollers.moveVelocity(0);
 		}
+		pros::delay(10); //edit delay as we see fit.
 	}
 }
 
