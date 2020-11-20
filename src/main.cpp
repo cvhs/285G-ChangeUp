@@ -32,6 +32,7 @@ okapi::ControllerButton intakeButton = okapi::ControllerDigital::R2;
 okapi::ControllerButton outtakeButton = okapi::ControllerDigital::R1;
 
 okapi::MotorGroup intake = MotorGroup({/*Insert Intake motorports here*/});
+okapi::MotorGroup rollers = MotorGroup({/*Insert rollers motorports here*/});
 
 okapi::Controller controller;
 
@@ -48,12 +49,15 @@ auto model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel())
 
 		if(intakeButton.isPressed()){
 			intake.moveVelocity(150); //Test motor velocities
+			rollers.moveVelocity(120);
 		}
 		else if(outtakeButton.isPressed()){
 			intake.moveVelocity(-90); //More testing here, too
+			rollers.moveVelocity(-50); //test
 		}
 		else {
 			intake.moveVelocity(0);
+			rollers.moveVelocity(0);
 		}
 	}
 }
