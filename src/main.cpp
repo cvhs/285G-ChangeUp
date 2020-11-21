@@ -1,12 +1,11 @@
 #include "devices.hpp" //deleted main.h, might bring it back
+//
+// okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR); //I need to get measurement for wheelbase width
+//
+// okapi::MotorGroup intake = MotorGroup({3,4});
+// okapi::MotorGroup rollers = MotorGroup({5,6});
 
-okapi::ChassisScales scales(4_in, 11.5_in); //I need to get measurement for wheelbase width
-
-okapi::MotorGroup intake = MotorGroup({/*Insert Intake motorports here*/});
-okapi::MotorGroup rollers = MotorGroup({/*Insert rollers motorports here*/});
-
-okapi::Controller controller;
-
+	bool autonRed;
 
 void on_center_button() {
 	static bool pressed = false;
@@ -26,13 +25,13 @@ void competition_initialize() {
 
 	pros::lcd::initialize();
 
-	okapi::ControllerButton blueAuton = okapi::controllerDigital::R1;
-	okapi::ControllerButton redAuton = okapi::controllerDigital::L1;
+	okapi::ControllerButton blueAuton = okapi::ControllerDigital::R1;
+	okapi::ControllerButton redAuton = okapi::ControllerDigital::L1;
 
 	pros::lcd::set_text(1, "Set 285G Auton"); //Change auton based on which color we are
 	pros::lcd::set_text(2, "L1 is Red, no input is blue");
 
-	bool autonRed;
+
 
 	if(redAuton.changedToPressed()){ //For when we have more than 1 auton mode
 		autonRed = true;
@@ -43,40 +42,47 @@ void competition_initialize() {
 }
 
 void autonomous() {
-	std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales, imev5GreenTPR).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).buildOdometry(); 
+	std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
 	std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
 	pros::delay(1000);
 
 	if(autonRed == true) {
 		intake.moveVelocity(150);
 		rollers.moveVelocity(120);
-		chassis -> setState(/*Red default position here*/);
-		chassis -> driveToPoint({1_ft, 1_ft, false, 1_ft});
+		//chassis -> setState(/*Red default position here*/);
+		//chassis -> driveToPoint({1_ft, 1_ft, false, 1_ft});
 	}
 	else{
 		intake.moveVelocity(150);
 		rollers.moveVelocity(120);
-		chassis -> setState(/*Blue default position here*/);
-		chassis -> driveToPoint({7_ft, 7_ft, false, 1_ft});
-	}
-	}
+		//chassis -> setState(/*Blue default position here*/);
+		//chassis -> driveToPoint({7_ft, 7_ft, false, 1_ft});
 
+	}
+}
 
-void opcontrol(){
+void opcontrol()
+{
+
+	pros::Motor frontIntake = front(5);
+
+	okapi::Controller controller;
 	//Button inputs
 okapi::ControllerButton intakeButton = okapi::ControllerDigital::R2;
 okapi::ControllerButton outtakeButton = okapi::ControllerDigital::R1;
 
-std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales, imev5GreenTPR).withOdometry(okapi::StateMode::CARTESIAN, 0_mm, 0_deg, 0.0001_mps).buildOdometry(); 
-std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
-	
+std::shared_ptr<okapi::OdomChassisController> drive = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
+std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(drive->getModel());
+
 	while(1){
 
-		std::shared_ptr<ChassisController> drive-> model->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftX)); //arcade style movement
-		
+		//std::shared_ptr<okapi::ChassisController> drive->getModel()->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftX));
+
+		drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY),
+	                                  controller.getAnalog(ControllerAnalog::leftX));
 
 		if(intakeButton.isPressed()){
-			intake.moveVelocity(150); //Test motor velocities
+			intake.moveVelocity(160); //Test motor velocities
 			rollers.moveVelocity(120);
 		}
 		else if(outtakeButton.isPressed()){
@@ -90,7 +96,6 @@ std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::Ch
 		pros::delay(10); //edit delay as we see fit.
 	}
 }
-
 //outdated PROS opcontrol
 
 /*pros::Controller master(pros::E_CONTROLLER_MASTER);
