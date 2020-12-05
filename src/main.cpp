@@ -1,12 +1,12 @@
 #include "main.h"
-#include "devices.hpp"
+#include "devices.hpp" //deleted main.h, might bring it back
 
 okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR);
 
 okapi::MotorGroup intake = MotorGroup({5,7});
 okapi::MotorGroup rollers = MotorGroup({3,4});
 
-
+bool autonRed;
 
 void on_center_button() {
 	static bool pressed = false;
@@ -43,14 +43,16 @@ void competition_initialize() {
 }
 
 void autonomous() {
-	 std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,19},{-17,-2}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
+	 std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,-2},{11,-12}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
 	 std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
 	 pros::delay(500);
 	 intake.moveVelocity(600);
 	 chassis->moveDistance(1_ft);
-	 chassis->turnAngle(90_deg);
-	 chassis->moveDistance(1_ft);
+	 chassis->turnAngle(45_deg);
+	 chassis->moveDistance(2.8_ft);
 	 rollers.moveVelocity(600);
+	 
+	 
 }
 
 void opcontrol()
@@ -60,10 +62,12 @@ void opcontrol()
 okapi::ControllerButton intakeButton(okapi::ControllerDigital::R2, false);
 okapi::ControllerButton outtakeButton(okapi::ControllerDigital::R1, false);
 
-std::shared_ptr<okapi::OdomChassisController> drive = okapi::ChassisControllerBuilder().withMotors({1,19},{-17,-2}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
+std::shared_ptr<okapi::OdomChassisController> drive = okapi::ChassisControllerBuilder().withMotors({1,-12},{11,-2}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
 std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(drive->getModel());
 
 	while(1){
+
+		//std::shared_ptr<okapi::ChassisController> drive->getModel()->arcade(controller.getAnalog(okapi::ControllerAnalog::leftY), controller.getAnalog(okapi::ControllerAnalog::leftX));
 
 		drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY),
 	                                  controller.getAnalog(ControllerAnalog::leftX));
@@ -86,3 +90,25 @@ std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::Ch
 		pros::delay(10); //edit delay as we see fit.
 	}
 }
+//outdated PROS opcontrol
+
+/*pros::Controller master(pros::E_CONTROLLER_MASTER);
+
+	pros::Motor left_mtr(1);
+	pros::Motor right_mtr(2);
+
+	while (true) {
+		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
+		int left = master.get_analog(ANALOG_LEFT_Y);
+		int right = master.get_analog(ANALOG_RIGHT_Y);
+
+void opcontrol() {
+		left_mtr = left;
+		right_mtr = right;
+		pros::delay(20);
+	}
+}
+*/
+

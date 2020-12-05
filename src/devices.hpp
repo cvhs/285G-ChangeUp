@@ -7,4 +7,4 @@ extern std::shared_ptr<okapi::ChassisModel> model;
 extern okapi::MotorGroup intake;
 extern okapi::MotorGroup rollers;
 
-bool autonRed;
+//
