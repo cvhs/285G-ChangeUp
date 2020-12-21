@@ -6,7 +6,6 @@ okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR);
 okapi::MotorGroup intake = MotorGroup({5,7});
 okapi::MotorGroup rollers = MotorGroup({3,4});
 
-
 void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
@@ -30,15 +29,14 @@ void competition_initialize() {
 
 	pros::lcd::set_text(1, "Set 285G Auton"); //Change auton based on which color we are
 	pros::lcd::set_text(2, "L1 is Red, no input is blue");
-
-
-
+/*
 	if(redAuton.changedToPressed()){ //For when we have more than 1 auton mode
 		autonRed = true;
 	}
 	else {
 		autonRed = false;
 	}
+	*/
 }
 
 void autonomous() {
@@ -46,14 +44,12 @@ void autonomous() {
 	 std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,19},{-2,-17}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
 	 std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
 	 pros::delay(500);
-	 intake.moveVelocity(600); //intake preload
-	 pros::lcd::print(0, "Motors working: %f\n", intake.getActualVelocity()); // print motors
+	 intake.moveVelocity(650); //intake preload
+	 pros::lcd::print(0, "Motors working: %f\n", rollers.getActualVelocity()); // print motors
 	 chassis->moveDistance(1_ft);
 	 chassis->turnAngle(90_deg);
 	 chassis->moveDistance(1_ft);
-	 rollers.moveVelocity(600); //shoot preload and other ball into goal
-	 
-	 
+	 rollers.moveVelocity(650); //shoot preload and other ball into goal
 }
 
 void opcontrol()
@@ -72,8 +68,8 @@ void opcontrol()
 	                                  controller.getAnalog(ControllerAnalog::leftX)); //arcade control
 
 		if(intakeButton.isPressed()){
-			 intake.moveVelocity(600); //Test motor velocities
-			 rollers.moveVelocity(600);
+			 intake.moveVelocity(650); //Test motor velocities
+			 rollers.moveVelocity(650);
 			
 		}
 		else if(outtakeButton.isPressed()){
