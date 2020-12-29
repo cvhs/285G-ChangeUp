@@ -1,6 +1,8 @@
 #include "main.h"
 #include "devices.hpp"
 
+bool tankDrive = false;
+
 okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR);
 
 okapi::MotorGroup intake = MotorGroup({5,7});
@@ -63,10 +65,15 @@ void opcontrol()
 	std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(drive->getModel());
 
 	while(1){
-
-				drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY),
-	                                  controller.getAnalog(ControllerAnalog::leftX)); //arcade control
-
+		if(tankDrive == true){
+			drive->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));								
+			//up-down movement of joysticks read to different directions of movement.
+		}
+		else{
+				drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX));
+				//arcade control - only one joystick controls which way the robot is moving
+			}
+			
 		if(intakeButton.isPressed()){
 			 intake.moveVelocity(650); //Test motor velocities
 			 rollers.moveVelocity(650);
@@ -85,5 +92,3 @@ void opcontrol()
 		pros::delay(10); //edit delay as we see fit.
 	}
 }
-
-
