@@ -66,7 +66,7 @@ void opcontrol()
 
 	while(1){
 		if(tankDrive == true){
-			drive->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));								
+			drive->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
 			//up-down movement of joysticks read to different directions of movement.
 		}
 		else{
@@ -75,18 +75,18 @@ void opcontrol()
 			}
 			
 		if(intakeButton.isPressed()){
-			 intake.moveVelocity(650); //Test motor velocities
-			 rollers.moveVelocity(650);
+			 intake.moveVoltage(12000); //Test motor voltages
+			 rollers.moveVoltage(12000);
 			
 		}
 		else if(outtakeButton.isPressed()){
-			 intake.moveVelocity(-200); //More testing here, too
-			 rollers.moveVelocity(-200); //test
+			 intake.moveVoltage(-12000); //More testing here, too
+			 rollers.moveVoltage(-12000); //test
 			
 		}
 		else {
-			 intake.moveVelocity(0);
-			 rollers.moveVelocity(0);
+			 intake.moveVoltage(0);
+			 rollers.moveVoltage(0);
 			
 		}
 		pros::delay(10); //edit delay as we see fit.
