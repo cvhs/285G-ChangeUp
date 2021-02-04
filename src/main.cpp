@@ -51,7 +51,7 @@ void autonomous() {
 	 chassis->moveDistance(1_ft);
 	 chassis->turnAngle(90_deg);
 	 chassis->moveDistance(1_ft);
-	 rollers.moveVelocity(650); //shoot preload and other ball into goal
+	 rollers.moveVelocity(200); //shoot preload and other ball into goal
 }
 
 void opcontrol()
@@ -75,18 +75,18 @@ void opcontrol()
 			}
 			
 		if(intakeButton.isPressed()){
-			 intake.moveVoltage(12000); //Test motor voltages
-			 rollers.moveVoltage(12000);
+			 rollers.moveVelocity(200); //Test motor voltages
+			 rollers.moveVelocity(200);
 			
 		}
 		else if(outtakeButton.isPressed()){
-			 intake.moveVoltage(-12000); //More testing here, too
-			 rollers.moveVoltage(-12000); //test
+			 rollers.moveVelocity(-200); //More testing here, too
+			 rollers.moveVelocity(-200); //test
 			
 		}
 		else {
-			 intake.moveVoltage(0);
-			 rollers.moveVoltage(0);
+			 rollers.moveVelocity(0);
+			 rollers.moveVelocity(0);
 			
 		}
 		pros::delay(10); //edit delay as we see fit.
