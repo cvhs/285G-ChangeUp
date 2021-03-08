@@ -5,7 +5,7 @@ bool tankDrive = false;
 
 okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR);
 
-okapi::MotorGroup intake = MotorGroup({5,7});
+okapi::MotorGroup intake = MotorGroup({-5,7});
 okapi::MotorGroup rollers = MotorGroup({3,4});
 
 void on_center_button() {
