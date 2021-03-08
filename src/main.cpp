@@ -5,7 +5,7 @@ bool tankDrive = false;
 
 okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR);
 
-okapi::MotorGroup intake = MotorGroup({5,7});
+okapi::MotorGroup intake = MotorGroup({-5,7});
 okapi::MotorGroup rollers = MotorGroup({3,4});
 
 void on_center_button() {
@@ -18,7 +18,6 @@ void on_center_button() {
 	}
 }
 
-void initialize() {}
 
 void disabled() {}
 
@@ -66,28 +65,28 @@ void opcontrol()
 
 	while(1){
 		if(tankDrive == true){
-			drive->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));								
+			drive->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
 			//up-down movement of joysticks read to different directions of movement.
 		}
 		else{
 				drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX));
 				//arcade control - only one joystick controls which way the robot is moving
 			}
-			
+
 		if(intakeButton.isPressed()){
-			 intake.moveVelocity(650); //Test motor velocities
-			 rollers.moveVelocity(650);
-			
+			 intake.moveVelocity(300); //Test motor voltages
+			 rollers.moveVelocity(300);
+
 		}
 		else if(outtakeButton.isPressed()){
-			 intake.moveVelocity(-200); //More testing here, too
-			 rollers.moveVelocity(-200); //test
-			
+			 intake.moveVelocity(-300); //More testing here, too
+			 rollers.moveVelocity(-300); //test
+
 		}
 		else {
 			 intake.moveVelocity(0);
 			 rollers.moveVelocity(0);
-			
+
 		}
 		pros::delay(10); //edit delay as we see fit.
 	}
