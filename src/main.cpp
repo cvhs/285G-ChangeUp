@@ -1,7 +1,7 @@
 #include "main.h"
 #include "devices.hpp"
 
-bool tankDrive = false;
+
 
 okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR);
 
@@ -41,6 +41,19 @@ void competition_initialize() {
 	*/
 }
 
+/*
+ideal auton notes:
+throw preload forwards, take in top two in column
+throw out bottom of stack so that only opposing color is left
+go backwards
+do 180
+eject opposing ball
+move forward 
+turn
+go forward, turn on intake(?)
+intake ball and two other in tower, expelling only our own alliance's balls
+*/
+
 void autonomous() {
 	//chassis
 	 std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,19},{-2,-17}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
@@ -48,9 +61,9 @@ void autonomous() {
 	 pros::delay(500);
 	 intake.moveVelocity(650); //intake preload
 	 pros::lcd::print(0, "Motors working: %f\n", rollers.getActualVelocity()); // print motors
-	 chassis->moveDistance(1_ft);
-	 chassis->turnAngle(90_deg);
-	 chassis->moveDistance(1_ft);
+	 chassis->moveDistance(46_in);
+	 chassis->turnAngle(45_deg);
+	 chassis->moveDistance(65.1_in);
 	 rollers.moveVelocity(200); //shoot preload and other ball into goal
 }
 

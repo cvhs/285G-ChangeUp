@@ -8,3 +8,5 @@ extern okapi::MotorGroup intake;
 extern okapi::MotorGroup rollers;
 
 bool autonRed;
+
+bool tankDrive = false;
