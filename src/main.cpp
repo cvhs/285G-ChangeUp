@@ -1,12 +1,7 @@
 #include "main.h"
-#include "devices.hpp"
+#include "devices/devices.hpp"
 
-
-
-okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR);
-
-okapi::MotorGroup intake = MotorGroup({-5,7});
-okapi::MotorGroup rollers = MotorGroup({3,4});
+bool tankDrive = false;
 
 void on_center_button() {
 	static bool pressed = false;
@@ -56,27 +51,17 @@ intake ball and two other in tower, expelling only our own alliance's balls
 
 void autonomous() {
 	//chassis
-	 std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,19},{-2,-17}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
-	 std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
 	 pros::delay(500);
 	 intake.moveVelocity(650); //intake preload
 	 pros::lcd::print(0, "Motors working: %f\n", rollers.getActualVelocity()); // print motors
-	 chassis->moveDistance(46_in);
-	 chassis->turnAngle(45_deg);
-	 chassis->moveDistance(65.1_in);
+	 autChassis->moveDistance(46_in);
+	 autChassis->turnAngle(45_deg);
+	 autChassis->moveDistance(65.1_in);
 	 rollers.moveVelocity(200); //shoot preload and other ball into goal
 }
 
 void opcontrol()
 {
-	okapi::Controller controller;
-	//Button inputs
-	okapi::ControllerButton intakeButton(okapi::ControllerDigital::R2, false);
-	okapi::ControllerButton outtakeButton(okapi::ControllerDigital::R1, false);
-	//declare chassis
-	std::shared_ptr<okapi::OdomChassisController> drive = okapi::ChassisControllerBuilder().withMotors({1,19},{-2,-17}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
-	std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(drive->getModel());
-
 	while(1){
 		if(tankDrive == true){
 			drive->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
@@ -88,17 +73,17 @@ void opcontrol()
 			}
 			
 		if(intakeButton.isPressed()){
-			 rollers.moveVelocity(200); //Test motor voltages
+			 intake.moveVelocity(200); //Test motor voltages
 			 rollers.moveVelocity(200);
 			
 		}
 		else if(outtakeButton.isPressed()){
-			 rollers.moveVelocity(-200); //More testing here, too
+			 intake.moveVelocity(-200); //More testing here, too
 			 rollers.moveVelocity(-200); //test
 			
 		}
 		else {
-			 rollers.moveVelocity(0);
+			 intake.moveVelocity(0);
 			 rollers.moveVelocity(0);
 			
 		}
