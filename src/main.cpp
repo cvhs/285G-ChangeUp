@@ -1,5 +1,6 @@
 #include "main.h"
-#include "devices/devices.hpp"
+#include "comp/devices.hpp"
+#include "comp/autonUtils.hpp"
 
 bool tankDrive = false;
 
@@ -50,6 +51,11 @@ intake ball and two other in tower, expelling only our own alliance's balls
 */
 
 void autonomous() {
+	oneBall();
+
+	leftAuton();
+	
+	/*
 	//chassis
 	 pros::delay(500);
 	 intake.moveVelocity(650); //intake preload
@@ -58,6 +64,7 @@ void autonomous() {
 	 autChassis->turnAngle(45_deg);
 	 autChassis->moveDistance(65.1_in);
 	 rollers.moveVelocity(200); //shoot preload and other ball into goal
+	*/
 }
 
 void opcontrol()
