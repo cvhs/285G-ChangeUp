@@ -13,8 +13,10 @@ intake ball and two other in tower, expelling only our own alliance's balls
 */
 
 void oneBall(){ //put one ball in the goal (used at the start of every round)
-    rollers.moveRelative(5, 200); //test max velocity and number of rotations needed
-    pros::delay(100);
+    intakeController->setTarget(720);
+    rollers.moveVelocity(200);
+    intakeController->waitUntilSettled();
+    rollers.moveVelocity(0);
 }
 
 void leftAuton(){ //note, measurements are approximate and therefore can be tweaked if we need to get closer
