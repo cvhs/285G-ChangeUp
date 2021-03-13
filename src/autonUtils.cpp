@@ -19,15 +19,22 @@ void oneBall(){ //put one ball in the goal (used at the start of every round)
 
 void leftAuton(){ //note, measurements are approximate and therefore can be tweaked if we need to get closer
     intakeController->setTarget(720); //intake two balls
-    rollersController->setTarget(3600); //output one ball
+    rollers.moveVelocity(200); //output one ball
+    intakeController->waitUntilSettled();
+    pros::delay(500);
+    rollers.moveVelocity(0);
     
     autChassis->moveDistance(-24.25_in); //back up
-    rollersController->setTarget(3600); //eject opposing ball
-    rollersController->waitUntilSettled();
+    rollers.moveVelocity(150);
+    intakeController->setTarget(1800); //eject opposing ball
+    intakeController->waitUntilSettled();
+    rollers.moveVelocity(0);
+
     autChassis->turnAngle(180_deg); //turn around
     autChassis->moveDistance(24.25_in); //finish leg 1
+    
     autChassis->turnAngle(-90_deg);
     autChassis->moveDistanceAsync(51.8_in); //finish leg 2
-    intakeController->setTarget(36000); //test rotations, idk
-    rollersController->setTarget(36000); //test rotations, idk
+    intake.moveVelocity(200); //test rotations, idk
+    rollers.moveVelocity(200); //test rotations, idk
 }
