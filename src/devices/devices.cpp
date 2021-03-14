@@ -12,14 +12,14 @@ const double autkP = 0.001;
 const double autkI = 0.0001;
 const double autkD = 0.0001;
 
-std::shared_ptr<AsyncPositionController<double, double>> intakeController = 
+std::shared_ptr<AsyncPositionController<double, double>> intakeController =
   AsyncPosControllerBuilder()
     .withMotor({intake})
     .withGains({autkP, autkI, autkD})
     .withMaxVelocity(200)
     .build();
 
-std::shared_ptr<AsyncPositionController<double, double>> rollersController = 
+std::shared_ptr<AsyncPositionController<double, double>> rollersController =
   AsyncPosControllerBuilder()
     .withMotor({rollers}) //not sure if I can hve 2 motorgroups, or even a whole motorgroup
     .withGains({autkP, autkI, autkD})
@@ -29,8 +29,10 @@ std::shared_ptr<AsyncPositionController<double, double>> rollersController =
 okapi::Controller controller;
 
 //Button inputs
-okapi::ControllerButton intakeButton(okapi::ControllerDigital::R2, false);
-okapi::ControllerButton outtakeButton(okapi::ControllerDigital::R1, false);
+okapi::ControllerButton intakeButton(okapi::ControllerDigital::L1, false);
+okapi::ControllerButton outtakeButton(okapi::ControllerDigital::L2, false);
+okapi::ControllerButton rollersInButton(okapi::ControllerDigital::R1, false);
+okapi::ControllerButton rollersOutButton(okapi::ControllerDigital::R2, false);
 //declare chassis
 std::shared_ptr<okapi::OdomChassisController> drive = okapi::ChassisControllerBuilder().withMotors({1,19},{-2,-17}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
 std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(drive->getModel());

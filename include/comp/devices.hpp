@@ -12,6 +12,8 @@ extern std::shared_ptr<okapi::OdomChassisController> drive;
 
 extern okapi::ControllerButton intakeButton;
 extern okapi::ControllerButton outtakeButton;
+extern okapi::ControllerButton rollersInButton;
+extern okapi::ControllerButton rollersOutButton;
 
 extern okapi::MotorGroup intake;
 extern okapi::MotorGroup rollers;
