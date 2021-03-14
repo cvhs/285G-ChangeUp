@@ -1,12 +1,8 @@
 #include "main.h"
-#include "devices.hpp"
+#include "comp/devices.hpp"
+#include "comp/autonUtils.hpp"
 
 bool tankDrive = false;
-
-okapi::ChassisScales scales({4_in, 11.5_in}, imev5GreenTPR);
-
-okapi::MotorGroup intake = MotorGroup({-5,7});
-okapi::MotorGroup rollers = MotorGroup({3,4});
 
 void on_center_button() {
 	static bool pressed = false;
@@ -40,29 +36,40 @@ void competition_initialize() {
 	*/
 }
 
+/*
+ideal auton notes:
+throw preload forwards, take in top two in column
+throw out bottom of stack so that only opposing color is left
+go backwards
+do 180
+eject opposing ball
+move forward
+turn
+go forward, turn on intake(?)
+intake ball and two other in tower, expelling only our own alliance's balls
+*/
+
 void autonomous() {
+	deploy();
+
+	oneBall();
+
+	leftAuton();
+
+	/*
 	//chassis
-	 std::shared_ptr<okapi::OdomChassisController> chassis = okapi::ChassisControllerBuilder().withMotors({1,19},{-2,-17}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
-	 std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(chassis->getModel());
 	 pros::delay(500);
 	 intake.moveVelocity(650); //intake preload
 	 pros::lcd::print(0, "Motors working: %f\n", rollers.getActualVelocity()); // print motors
-	 chassis->moveDistance(1_ft);
-	 chassis->turnAngle(90_deg);
-	 chassis->moveDistance(1_ft);
-	 rollers.moveVelocity(650); //shoot preload and other ball into goal
+	 autChassis->moveDistance(46_in);
+	 autChassis->turnAngle(45_deg);
+	 autChassis->moveDistance(65.1_in);
+	 rollers.moveVelocity(200); //shoot preload and other ball into goal
+	*/
 }
 
 void opcontrol()
 {
-	okapi::Controller controller;
-	//Button inputs
-	okapi::ControllerButton intakeButton(okapi::ControllerDigital::R2, false);
-	okapi::ControllerButton outtakeButton(okapi::ControllerDigital::R1, false);
-	//declare chassis
-	std::shared_ptr<okapi::OdomChassisController> drive = okapi::ChassisControllerBuilder().withMotors({1,19},{-2,-17}).withDimensions(okapi::AbstractMotor::gearset::green, scales).withOdometry(scales).buildOdometry();
-	std::shared_ptr<okapi::ChassisModel> model = std::dynamic_pointer_cast<okapi::ChassisModel>(drive->getModel());
-
 	while(1){
 		if(tankDrive == true){
 			drive->getModel()->tank(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::rightY));
@@ -74,14 +81,18 @@ void opcontrol()
 			}
 
 		if(intakeButton.isPressed()){
-			 intake.moveVelocity(300); //Test motor voltages
-			 rollers.moveVelocity(300);
+			 intake.moveVelocity(650); //Test motor voltages
 
 		}
 		else if(outtakeButton.isPressed()){
-			 intake.moveVelocity(-300); //More testing here, too
-			 rollers.moveVelocity(-300); //test
+			 intake.moveVelocity(-650); //More testing here, too
 
+		}
+		else if(rollersInButton.isPressed()){
+			rollers.moveVelocity(650);
+		}
+		else if(rollersOutButton.isPressed()){
+			rollers.moveVelocity(-650);
 		}
 		else {
 			 intake.moveVelocity(0);
