@@ -23,14 +23,14 @@ std::shared_ptr<AsyncPositionController<double, double>> rollersController =
   AsyncPosControllerBuilder()
     .withMotor({rollers}) //not sure if I can hve 2 motorgroups, or even a whole motorgroup
     .withGains({autkP, autkI, autkD})
-    .withMaxVelocity(200)
+    .withMaxVelocity(600)
     .build();
 
 okapi::Controller controller;
 
 //Button inputs
-okapi::ControllerButton intakeButton(okapi::ControllerDigital::L1, false);
-okapi::ControllerButton outtakeButton(okapi::ControllerDigital::L2, false);
+okapi::ControllerButton intakeButton(okapi::ControllerDigital::L2, false);
+okapi::ControllerButton outtakeButton(okapi::ControllerDigital::L1, false);
 okapi::ControllerButton rollersInButton(okapi::ControllerDigital::R1, false);
 okapi::ControllerButton rollersOutButton(okapi::ControllerDigital::R2, false);
 //declare chassis

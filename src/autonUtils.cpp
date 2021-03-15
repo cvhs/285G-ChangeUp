@@ -25,23 +25,27 @@ void oneBall(){ //put one ball in the goal (used at the start of every round)
 }
 
 void leftAuton(){ //note, measurements are approximate and therefore can be tweaked if we need to get closer
-    intakeController->setTarget(720); //intake two balls
-    rollers.moveVelocity(200); //output one ball
-    intakeController->waitUntilSettled();
-    pros::delay(1000);
+    autChassis->moveDistance(45_in);
+    pros::delay(500);
+    autChassis->turnAngle(-152_deg);
+    pros::delay(500);
+    intakeController->setTarget(36000);
+    autChassis->moveDistance(52_in);
+    rollersController->setTarget(36000);
+    pros::delay(20000);
     rollers.moveVelocity(0);
+    intake.moveVelocity(0);
+}
 
-    autChassis->moveDistance(-24.25_in); //back up
-    rollers.moveVelocity(150);
-    intakeController->setTarget(1800); //eject opposing ball
-    intakeController->waitUntilSettled();
-    rollers.moveVelocity(0);
-
-    autChassis->turnAngle(180_deg); //turn around
-    autChassis->moveDistance(24.25_in); //finish leg 1
-
-    autChassis->turnAngle(-90_deg);
-    autChassis->moveDistanceAsync(51.8_in); //finish leg 2
-    intake.moveVelocity(200); //test rotations, idk
-    rollers.moveVelocity(200); //test rotations, idk
+void rightAuton(){
+  autChassis->moveDistance(45_in);
+  pros::delay(500);
+  autChassis->turnAngle(152_deg);
+  pros::delay(500);
+  intakeController->setTarget(7200);
+  autChassis->moveDistance(52_in);
+  rollersController->setTarget(3600);
+  pros::delay(20000);
+  rollers.moveVelocity(0);
+  intake.moveVelocity(0);
 }

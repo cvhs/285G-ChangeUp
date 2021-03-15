@@ -52,9 +52,10 @@ intake ball and two other in tower, expelling only our own alliance's balls
 void autonomous() {
 	deploy();
 
-	oneBall();
-
 	leftAuton();
+
+	//rightAuton();
+
 
 	/*
 	//chassis
@@ -81,18 +82,18 @@ void opcontrol()
 			}
 
 		if(intakeButton.isPressed()){
-			 intake.moveVelocity(650); //Test motor voltages
-
+			 intake.moveVelocity(200); //Test motor voltages
+			 rollers.moveVelocity(600);
 		}
 		else if(outtakeButton.isPressed()){
-			 intake.moveVelocity(-650); //More testing here, too
-
+			 intake.moveVelocity(-200); //More testing here, too
+			 rollers.moveVelocity(-600);
 		}
 		else if(rollersInButton.isPressed()){
-			rollers.moveVelocity(650);
+			rollers.moveVelocity(600);
 		}
 		else if(rollersOutButton.isPressed()){
-			rollers.moveVelocity(-650);
+			rollers.moveVelocity(-600);
 		}
 		else {
 			 intake.moveVelocity(0);
