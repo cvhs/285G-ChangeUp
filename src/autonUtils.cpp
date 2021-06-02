@@ -49,3 +49,13 @@ void rightAuton(){
   rollers.moveVelocity(0);
   intake.moveVelocity(0);
 }
+
+void rightAuton2(){
+  autChassis->moveDistance(15_in);
+  pros::delay(500);
+  rollersController->setTarget(3600);
+  rollers.moveVelocity(-600);
+  pros::delay(2000);
+  autChassis->moveDistance(-10_in);
+  pros::delay(500);
+}

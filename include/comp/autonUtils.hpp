@@ -6,4 +6,6 @@ extern void leftAuton();
 
 extern void rightAuton();
 
+extern void rightAuton2();
+
 extern void deploy();
